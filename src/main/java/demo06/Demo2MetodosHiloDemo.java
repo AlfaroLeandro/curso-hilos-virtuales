@@ -28,44 +28,42 @@ public class Demo2MetodosHiloDemo {
 
 
     /*
-        To offload multiple time-consuming I/O calls to Virtual threads and wait for them to complete
-        Note: We can do better in the actual application which we will develop later.
-        It is a simple thread.join() demo
+        Para manejar multiples operaciones de IO con hilos virtuales y esperar a que se completen
      */
     private static void join() throws InterruptedException {
-        var t1 = Thread.ofVirtual().start(() -> {
-            CommonUtils.sleep(Duration.ofSeconds(2));
-            log.info("called product service");
+        var hilo1 = Thread.ofVirtual().start(() -> {
+            Utiles.sleep(Duration.ofSeconds(2));
+            log.info("Llamada a servicio de productos");
         });
-        var t2 = Thread.ofVirtual().start(() -> {
-            CommonUtils.sleep(Duration.ofSeconds(2));
-            log.info("called pricing service");
+        var hilo2 = Thread.ofVirtual().start(() -> {
+            Utiles.sleep(Duration.ofSeconds(2));
+            log.info("Llamada a servicio de productos");
         });
-        t1.join();
-        t2.join();
+        hilo1.join();
+        hilo2.join();
     }
 
     /*
-        To interrupt / stop the thread execution
-        in some cases, java will throw interrupted exception, IO exception, socket exception etc
+        Para interrumpir / parar la ejecucion de un hilo
+        En algunos casos, Java lanza un Interrupted Exception, IO Exception, Socket Exception, etc.
 
-        We can also check if the current thread is interrupted
-        Thread.currentThread().isInterrupted() - returns a boolean
+        Tambien para chequear si el hilo actual esta interrumpido
+        Thread.currentThread().isInterrupted() - retorna boolean
 
         while(!Thread.currentThread().isInterrupted()){
-            continue the work
+            Continuar trabajando
             ...
             ...
         }
      */
     private static void interrupt() {
-        var t1 = Thread.ofVirtual().start(() -> {
-            CommonUtils.sleep(Duration.ofSeconds(2));
-            log.info("called product service");
+        var hilo = Thread.ofVirtual().start(() -> {
+            Utiles.sleep(Duration.ofSeconds(2));
+            log.info("Llamada a servicio de productos");
         });
-        log.info("is t1 interrupted: {}", t1.isInterrupted());
-        t1.interrupt();
-        log.info("is t1 interrupted: {}", t1.isInterrupted());
+        log.info("esta el hilo interrumpido: {}", hilo.isInterrupted());
+        hilo.interrupt();
+        log.info("esta el hilo interrumpido: {}", hilo.isInterrupted());
     }
 
 }

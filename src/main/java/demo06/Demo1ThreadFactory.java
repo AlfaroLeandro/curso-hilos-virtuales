@@ -20,10 +20,10 @@ public class Demo1ThreadFactory {
     }
 
     /*
-        Create few threads
-        Each thread creates 1 child thread
-        It is a simple demo. In the real life, lets use ExecutorService etc
-        Virtual threads are cheap to create.
+        Crear hilos con tareas
+        Cada hilo crea hilos con 1 subtarea
+        En la vida real usamos ExecutorService, etc
+        Los hilos vituales son baratos de crear
      */
 
     private static void demo(ThreadFactory factory){
