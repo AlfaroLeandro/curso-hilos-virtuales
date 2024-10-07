@@ -19,20 +19,20 @@ public class Demo1AutoClosable {
     }
 
     // w/o autocloseable - habia que cerrar el executor service
-    private static void withoutAutoCloseable(){
+    private static void sinAutoClosable(){
         var executorService = Executors.newSingleThreadExecutor();
         executorService.submit(Demo1AutoClosable::tarea);
         log.info("submitted");
         executorService.shutdown();
     }
 
-    private static void withAutoCloseable(){
+    private static void conAutoCloseable(){
         try(var executorService = Executors.newSingleThreadExecutor()){
             executorService.submit(Demo1AutoClosable::tarea);
             executorService.submit(Demo1AutoClosable::tarea);
             executorService.submit(Demo1AutoClosable::tarea);
             executorService.submit(Demo1AutoClosable::tarea);
-            log.info("submitted");
+            log.info("subido");
         }
     }
 
