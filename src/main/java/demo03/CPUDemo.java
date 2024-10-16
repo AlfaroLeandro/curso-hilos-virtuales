@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import util.Utiles;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.IntStream;
 
 public class CPUDemo {
     private static final Logger log = LoggerFactory.getLogger(CPUDemo.class);
@@ -12,23 +13,23 @@ public class CPUDemo {
 
     public static void main(String[] args) {
         log.info("Cantidad de tareas: {}", CANTIDAD_TAREAS);
-        for (int i = 0; i < 3; i++) {
-            var tiempo = Utiles.timer(() -> demo(Thread.ofVirtual()));
-            log.info("tiempo total hilos virtuales {} ms", tiempo);
-            tiempo = Utiles.timer(() -> demo(Thread.ofPlatform()));
-            log.info("tiempo total hilos de plataforma {} ms", tiempo);
-        }
-
+        IntStream.range(0, 3)
+                .forEach(_ -> {
+                    var tiempo = Utiles.timer(() -> demo(Thread.ofVirtual()));
+                    log.info("tiempo total hilos virtuales {} ms", tiempo);
+                    tiempo = Utiles.timer(() -> demo(Thread.ofPlatform()));
+                    log.info("tiempo total hilos de plataforma {} ms", tiempo);
+                });
     }
 
     private static void demo(Thread.Builder builder){
         var latch = new CountDownLatch(CANTIDAD_TAREAS);
-        for (int i = 1; i <= CANTIDAD_TAREAS; i++) {
-            builder.start(() ->{
-                operacionCPU(45);
-                latch.countDown();
-            });
-        }
+        IntStream.rangeClosed(1, CANTIDAD_TAREAS)
+                .forEach(_ ->
+                        builder.start(() ->{
+                            operacionCPU(45);
+                            latch.countDown();
+                        }));
         try {
             latch.await();
         } catch (InterruptedException e) {

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import util.Utiles;
 
 import java.time.Duration;
+import java.util.stream.IntStream;
 
 public class StackDemo {
     private static final Logger log = LoggerFactory.getLogger(StackDemo.class);
@@ -18,10 +19,8 @@ public class StackDemo {
     }
 
     private static void demo(Thread.Builder builder){
-        for (int i = 1; i <= 20 ; i++) {
-            int j = i;
-            builder.start(() -> ejecutar(j));
-        }
+        IntStream.rangeClosed(1, 20)
+                .forEach(i -> builder.start(() -> ejecutar(i)));
     }
 
     public static void ejecutar(int i){
@@ -35,7 +34,7 @@ public class StackDemo {
     }
 
     private static void metodo1(int i){
-        Utiles.sleep(Duration.ofMillis(300));
+        Utiles.sleep(Duration.ofMillis(150));
         try{
             metodo2(i);
         }catch (Exception e){
@@ -44,14 +43,14 @@ public class StackDemo {
     }
 
     private static void metodo2(int i){
-        Utiles.sleep(Duration.ofMillis(100));
+        Utiles.sleep(Duration.ofMillis(200));
         metodo3(i);
     }
 
     private static void metodo3(int i){
-        Utiles.sleep(Duration.ofMillis(500));
-        if(i == 4){
-            throw new IllegalArgumentException("No puedo ser 4");
+        Utiles.sleep(Duration.ofMillis(450));
+        if(i == 10){
+            throw new IllegalArgumentException("No puedo ser 10");
         }
     }
 }

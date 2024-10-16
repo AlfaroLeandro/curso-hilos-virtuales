@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import util.Utiles;
 
 import java.time.Duration;
+import java.util.stream.IntStream;
 
 public class PlanificacionCooperativaDemo {
     private static final Logger log = LoggerFactory.getLogger(PlanificacionCooperativaDemo.class);
@@ -27,13 +28,15 @@ public class PlanificacionCooperativaDemo {
 
     }
 
-    private static void demo(int threadNumber){
-        log.info("hilo-{} iniciado", threadNumber);
-        for (int i = 0; i < 10; i++) {
-            log.info("hilo-{} esta imprimiendo {}. Thread: {}", threadNumber, i, Thread.currentThread());
-            Thread.yield(); // just for demo purposes
-        }
-        log.info("hilo-{} finalizado", threadNumber);
+    private static void demo(int numeroHilo){
+        log.info("iniciando hilo {}", numeroHilo);
+
+        IntStream.range(0, 10)
+                .forEachOrdered(i -> {
+                    log.info("hilo {} esta imprimiendo {}. Thread: {}", numeroHilo, i, Thread.currentThread());
+                    Thread.yield();
+                });
+        log.info("hilo {} finalizado", numeroHilo);
     }
 
 }
