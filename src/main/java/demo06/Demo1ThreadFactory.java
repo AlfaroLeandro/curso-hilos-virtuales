@@ -6,6 +6,7 @@ import util.Utiles;
 
 import java.time.Duration;
 import java.util.concurrent.ThreadFactory;
+import java.util.stream.IntStream;
 
 public class Demo1ThreadFactory {
 
@@ -27,18 +28,19 @@ public class Demo1ThreadFactory {
      */
 
     private static void demo(ThreadFactory factory){
-        for (int i = 0; i < 30; i++) {
-            var t = factory.newThread(() -> {
-                log.info("Tarea iniciada. {}", Thread.currentThread());
-                var ct = factory.newThread(() -> {
-                    log.info("SubTarea iniciada. {}", Thread.currentThread());
-                    Utiles.sleep(Duration.ofSeconds(2));
-                    log.info("SubTarea finalizada. {}", Thread.currentThread());
+        IntStream.range(0, 30)
+                .forEach(_ ->{
+                    var t = factory.newThread(() -> {
+                        log.info("Tarea iniciada. {}", Thread.currentThread());
+                        var ct = factory.newThread(() -> {
+                            log.info("SubTarea iniciada. {}", Thread.currentThread());
+                            Utiles.sleep(Duration.ofSeconds(2));
+                            log.info("SubTarea finalizada. {}", Thread.currentThread());
+                        });
+                        ct.start();
+                        log.info("Tarea finalizada. {}", Thread.currentThread());
+                    });
+                    t.start();
                 });
-                ct.start();
-                log.info("Tarea finalizada. {}", Thread.currentThread());
-            });
-            t.start();
-        }
     }
 }
