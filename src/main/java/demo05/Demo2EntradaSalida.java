@@ -7,18 +7,19 @@ import util.Utiles;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
-public class Demo3SincronizacionIO {
-    private static final Logger log = LoggerFactory.getLogger(Demo3SincronizacionIO.class);
+public class Demo2EntradaSalida {
+    private static final Logger log = LoggerFactory.getLogger(Demo2EntradaSalida.class);
     private static final List<String> list = new ArrayList<>();
 
-    // Usa esto para ver los hilos pinned
-    static {
-        System.setProperty("jdk.tracePinnedThreads", "short");
-    }
+    private static final Lock lock = new ReentrantLock();
+
 
     public static void main(String[] args) {
+        System.setProperty("jdk.tracePinnedThreads", "short"); // Usa esto para ver los hilos pinned
 
         Runnable runnable = () -> log.info("#!#!#!#!# Mensaje de prueba #!#!#!#!");
 
@@ -26,24 +27,37 @@ public class Demo3SincronizacionIO {
 //        demo(Thread.ofPlatform());
 //        Thread.ofPlatform().start(runnable);
 
-        demo(Thread.ofVirtual());
+        demo(Thread.ofVirtual(), Demo2EntradaSalida::tareaES);
+        demo(Thread.ofVirtual(), Demo2EntradaSalida::tareaESLock);
+
         Thread.ofVirtual().start(runnable);
 
         Utiles.sleep(Duration.ofSeconds(15));
 
     }
 
-    private static void demo(Thread.Builder builder){
+    private static void demo(Thread.Builder builder, Runnable runnable){
         IntStream.range(0, 50)
                 .forEach(_ -> {
                     log.info("Tarea iniciada. {}", Thread.currentThread());
-                    tareaES();
+                    runnable.run();
                     log.info("Tarea finalizada. {}", Thread.currentThread());
                 });
     }
 
     private static synchronized void tareaES(){
         Utiles.sleep(Duration.ofSeconds(10));
+    }
+
+    private static void tareaESLock(){
+        try{
+            lock.lock();
+            Utiles.sleep(Duration.ofSeconds(10));
+        }catch (Exception e){
+            log.error("error", e);
+        }finally {
+            lock.unlock();
+        }
     }
 
 }
