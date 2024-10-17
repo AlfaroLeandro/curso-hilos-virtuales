@@ -8,8 +8,8 @@ import java.time.Duration;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Demo5ReentrantLockIO {
-    private static final Logger log = LoggerFactory.getLogger(Demo5ReentrantLockIO.class);
+public class Demo5ReentrantLockES {
+    private static final Logger log = LoggerFactory.getLogger(Demo5ReentrantLockES.class);
     private static final Lock lock = new ReentrantLock();
 
     static {

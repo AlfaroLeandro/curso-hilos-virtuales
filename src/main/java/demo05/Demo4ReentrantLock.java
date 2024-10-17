@@ -1,6 +1,5 @@
 package demo05;
 
-import com.vinsguru.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Utiles;
@@ -10,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.IntStream;
 
-/*
-    Virtual Threads are indented for I/O tasks. This is a simple demo the use of ReentrantLock
+/**
+ * Demo de ReentrantLock
  */
 public class Demo4ReentrantLock {
 
-    private static final Logger log = LoggerFactory.getLogger(Lec04ReentrantLock.class);
+    private static final Logger log = LoggerFactory.getLogger(Demo4ReentrantLock.class);
     private static final Lock lock = new ReentrantLock();
     private static final List<String> list = new ArrayList<>();
 
@@ -30,18 +30,17 @@ public class Demo4ReentrantLock {
     }
 
     private static void demo(Thread.Builder builder){
-        for (int i = 0; i < 50; i++) {
-            builder.start(() -> {
-                log.info("Tarea iniciada. {}", Thread.currentThread());
-                for (int j = 0; j < 200; j++) {
-                    inMemoryTask();
-                }
-                log.info("Tarea finalizada. {}", Thread.currentThread());
-            });
-        }
+        IntStream.range(0, 50)
+                 .forEach(_ -> {
+                    builder.start(() -> {
+                        log.info("Tarea iniciada. {}", Thread.currentThread());
+                        IntStream.range(0, 200).forEach(_ -> tareaEnMemoria());
+                        log.info("Tarea finalizada. {}", Thread.currentThread());
+                    });
+                });
     }
 
-    private synchronized static void inMemoryTask(){
+    private synchronized static void tareaEnMemoria(){
         try{
             lock.lock();
             list.add("a");

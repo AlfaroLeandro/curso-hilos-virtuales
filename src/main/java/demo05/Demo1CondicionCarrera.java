@@ -27,8 +27,7 @@ public class Demo1CondicionCarrera {
                 .forEachOrdered(_ -> {
                     builder.start(() -> {
                         log.info("Tarea iniciada. {}", Thread.currentThread());
-                        IntStream.range(0, 200)
-                                 .forEach(_ -> tareaEnMemoria());
+                        IntStream.range(0, 200).forEach(_ -> tareaEnMemoria());
                         log.info("Tarea finalizada. {}", Thread.currentThread());
                     });
                 });

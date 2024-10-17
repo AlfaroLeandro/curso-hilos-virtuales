@@ -7,6 +7,7 @@ import util.Utiles;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Demo3SincronizacionIO {
     private static final Logger log = LoggerFactory.getLogger(Demo3SincronizacionIO.class);
@@ -33,16 +34,15 @@ public class Demo3SincronizacionIO {
     }
 
     private static void demo(Thread.Builder builder){
-        for (int i = 0; i < 50; i++) {
-            builder.start(() -> {
-                log.info("Tarea iniciada. {}", Thread.currentThread());
-                ioTask();
-                log.info("Tarea finalizada. {}", Thread.currentThread());
-            });
-        }
+        IntStream.range(0, 50)
+                .forEach(_ -> {
+                    log.info("Tarea iniciada. {}", Thread.currentThread());
+                    tareaES();
+                    log.info("Tarea finalizada. {}", Thread.currentThread());
+                });
     }
 
-    private static synchronized void ioTask(){
+    private static synchronized void tareaES(){
         Utiles.sleep(Duration.ofSeconds(10));
     }
 

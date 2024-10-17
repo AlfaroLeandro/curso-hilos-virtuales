@@ -7,6 +7,7 @@ import util.Utiles;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Demo2Sincronizacion {
     private static final Logger log = LoggerFactory.getLogger(Demo2Sincronizacion.class);
@@ -22,18 +23,17 @@ public class Demo2Sincronizacion {
     }
 
     private static void demo(Thread.Builder builder){
-        for (int i = 0; i < 50; i++) {
-            builder.start(() -> {
-                log.info("Tarea iniciada. {}", Thread.currentThread());
-                for (int j = 0; j < 200; j++) {
-                    inMemoryTask();
-                }
-                log.info("Tarea finalizada. {}", Thread.currentThread());
-            });
-        }
+        IntStream.range(0, 50)
+                .forEach(_ -> {
+                    builder.start(() -> {
+                        log.info("Tarea iniciada. {}", Thread.currentThread());
+                        IntStream.range(0, 200).forEach(_ -> tareaEnMemoria());
+                        log.info("Tarea finalizada. {}", Thread.currentThread());
+                    });
+                });
     }
 
-    private synchronized static void inMemoryTask(){
+    private synchronized static void tareaEnMemoria(){
         list.add("a");
     }
 
