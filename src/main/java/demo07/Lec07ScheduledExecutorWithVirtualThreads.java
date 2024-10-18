@@ -1,9 +1,9 @@
 package demo07;
 
-import com.leandro.demo07.externalservice.Client;
-import com.vinsguru.util.CommonUtils;
+import demo07.externalservice.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.Utiles;
 
 import java.time.Duration;
 import java.util.concurrent.Executors;
@@ -26,12 +26,12 @@ public class Lec07ScheduledExecutorWithVirtualThreads {
                 executor.submit(() -> printProductInfo(1));
             }, 0, 3, TimeUnit.SECONDS);
 
-            CommonUtils.sleep(Duration.ofSeconds(15));
+            Utiles.sleep(Duration.ofSeconds(15));
         }
     }
 
     private static void printProductInfo(int id){
-        log.info("{} => {}", id, Client.getProduct(id));
+        log.info("{} => {}", id, Client.getProducto(id));
     }
 
 }

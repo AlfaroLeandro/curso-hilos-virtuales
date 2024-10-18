@@ -1,7 +1,8 @@
 package demo07;
 
-import com.leandro.demo07.concurrencylimit.ConcurrencyLimiter;
-import com.leandro.demo07.externalservice.Client;
+import demo07.externalservice.Client;
+import demo07.concurrencylimit.ConcurrenciaLimitador;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,11 +14,11 @@ public class Lec06ConcurrencyLimitWithSemaphore {
 
     public static void main(String[] args) throws Exception {
         var factory = Thread.ofVirtual().name("vins", 1).factory();
-        var limiter = new ConcurrencyLimiter(Executors.newThreadPerTaskExecutor(factory), 3);
+        var limiter = new ConcurrenciaLimitador(Executors.newThreadPerTaskExecutor(factory), 3);
         execute(limiter, 200);
     }
 
-    private static void execute(ConcurrencyLimiter concurrencyLimiter, int taskCount) throws Exception {
+    private static void execute(ConcurrenciaLimitador concurrencyLimiter, int taskCount) throws Exception {
         try(concurrencyLimiter){
             for (int i = 1; i <= taskCount; i++) {
                 int j = i;
@@ -30,7 +31,7 @@ public class Lec06ConcurrencyLimitWithSemaphore {
     // 3rd party service
     // contract: 3 concurrent calls are allowed
     private static String printProductInfo(int id){
-        var product = Client.getProduct(id);
+        var product = Client.getProducto(id);
         log.info("{} => {}", id, product);
         return product;
     }

@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 /*
     varios tipos de executors
@@ -53,15 +54,12 @@ public class Demo2ExecutorsTipos {
 
     private static void ejecutar(ExecutorService executorService, int taskCount){
         try(executorService){
-            for (int i = 0; i < taskCount; i++) {
-                int j = i;
-                executorService.submit(() -> operacionIO(j));
-            }
+            IntStream.range(0, taskCount).forEach(Demo2ExecutorsTipos::tareaES);
             log.info("subido");
         }
     }
 
-    private static void operacionIO(int i){
+    private static void tareaES(int i){
         log.info("Tarea iniciada: {}. Thread Info {}", i, Thread.currentThread());
         Utiles.sleep(Duration.ofSeconds(5));
         log.info("Tarea finalizada: {}. Thread Info {}", i, Thread.currentThread());

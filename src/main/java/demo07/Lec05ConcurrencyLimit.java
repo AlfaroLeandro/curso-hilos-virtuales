@@ -1,6 +1,6 @@
 package demo07;
 
-import com.leandro.demo07.externalservice.Client;
+import demo07.externalservice.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +30,6 @@ public class Lec05ConcurrencyLimit {
     // 3rd party service
     // contract: 3 concurrent calls are allowed
     private static void printProductInfo(int id){
-        log.info("{} => {}", id, Client.getProduct(id));
+        log.info("{} => {}", id, Client.getProducto(id));
     }
 }
