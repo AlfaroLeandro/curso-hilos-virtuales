@@ -1,6 +1,6 @@
 package demo07;
 
-import demo07.externalservice.Client;
+import demo07.servicioexterno.ArticuloCliente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +17,9 @@ public class Demo3AccederResponseFuture {
 
         try(var executor = Executors.newVirtualThreadPerTaskExecutor()){
 
-            var product1 = executor.submit(() -> Client.getProducto(1));
-            var product2 = executor.submit(() -> Client.getProducto(2));
-            var product3 = executor.submit(() -> Client.getProducto(3));
+            var product1 = executor.submit(() -> ArticuloCliente.getArticulo(1));
+            var product2 = executor.submit(() -> ArticuloCliente.getArticulo(2));
+            var product3 = executor.submit(() -> ArticuloCliente.getArticulo(3));
 
             log.info("producto-1: {}", product1.get());
             log.info("producto-2: {}", product2.get());

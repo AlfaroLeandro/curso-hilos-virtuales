@@ -1,7 +1,7 @@
 package demo07;
 
-import demo07.aggregator.AgregadorServicio;
-import demo07.aggregator.ProductDto;
+import demo07.agregador.AgregadorServicio;
+import demo07.agregador.ArticuloDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,19 +17,18 @@ public class Demo4Agregador {
 
         // beans / singletons
         var executor = Executors.newVirtualThreadPerTaskExecutor();
-        var aggregator = new AgregadorServicio(executor);
+        var agregador = new AgregadorServicio(executor);
 
         var futures = IntStream.rangeClosed(1, 50)
-                               .mapToObj(id -> executor.submit(() -> aggregator.getProductDto(id))).toList();
-        var list = futures.stream()
-                          .map(Demo4Agregador::toProductDto)
-                          .toList();
-
-        log.info("list: {}", list);
+                               .mapToObj(id -> executor.submit(() -> agregador.getArticulo(id)))
+                               .toList();
+        log.info("list: {}", futures.stream()
+                                    .map(Demo4Agregador::toDTO)
+                                    .toList());
 
     }
 
-    private static ProductDto toProductDto(Future<ProductDto> future){
+    private static ArticuloDTO toDTO(Future<ArticuloDTO> future){
         try {
             return future.get();
         }catch (Exception e){

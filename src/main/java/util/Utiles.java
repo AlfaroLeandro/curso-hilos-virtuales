@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public abstract class Utiles {
 
@@ -26,10 +28,18 @@ public abstract class Utiles {
     }
 
     public static long timer(Runnable runnable){
-        var start = System.currentTimeMillis();
+        var inicio = System.currentTimeMillis();
         runnable.run();
-        var end = System.currentTimeMillis();
-        return (end - start);
+        var fin = System.currentTimeMillis();
+        return (fin - inicio);
+    }
+
+    public static <T> T timerT(Supplier<T> supplierT){
+        var inicio = System.currentTimeMillis();
+        var future = supplierT.get();
+        var fin = System.currentTimeMillis();
+        log.info("Tiempo tomado: {}", fin - inicio);
+        return future;
     }
 
 }

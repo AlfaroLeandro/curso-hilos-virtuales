@@ -35,10 +35,11 @@ public class Demo1Memoria {
 
     private static void demo(Thread.Builder builder, Runnable tarea){
         IntStream.range(0, 50)
-                .forEachOrdered(_ -> {
+                .forEach(_ -> {
                     builder.start(() -> {
                         log.info("Tarea iniciada. {}", Thread.currentThread());
-                        IntStream.range(0, 200).forEach(_ -> tarea.run());
+                        for (int i = 0; i < 200; i++)
+                            tarea.run();
                         log.info("Tarea finalizada. {}", Thread.currentThread());
                     });
                 });
