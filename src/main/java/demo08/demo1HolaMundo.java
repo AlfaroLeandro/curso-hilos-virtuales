@@ -1,6 +1,5 @@
 package demo08;
 
-import com.learnjava.service.HelloWorldService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Utiles;
@@ -10,15 +9,12 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static com.learnjava.util.CommonUtil.*;
-import static com.learnjava.util.LoggerUtil.log;
 import static java.util.stream.Collectors.joining;
 
-public class CompletableFutureHelloWorld {
+public class demo1HolaMundo {
 
-    private static final Logger log = LoggerFactory.getLogger(CompletableFutureHelloWorld.class);
+    private static final Logger log = LoggerFactory.getLogger(demo1HolaMundo.class);
 
     public static CompletableFuture<String> helloWorld() {
 
