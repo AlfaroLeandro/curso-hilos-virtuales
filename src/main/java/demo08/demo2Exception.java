@@ -11,63 +11,63 @@ import java.util.concurrent.CompletableFuture;
 
 public class demo2Exception {
 
-    private static final Logger log = LoggerFactory.getLogger(demo1HolaMundo.class);
+    private static final Logger log = LoggerFactory.getLogger(demo2Exception.class);
 
-    public String helloWorld_3_async_calls_handle() {
+    public String holaMundo3LlamadasAsyncHandle() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-            CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
-                return " HI CompletableFuture!";
+                return " Soy un completable Future!";
             });
 
-            return hello
-                    .handle((result, e) -> { // this gets invoked for both success and failure
-                        log.info(("result is : " + result));
+            return hola
+                    .handle((resultado, e) -> { // se invoca para ambos exito y fallo
+                        log.info(("el resultado es : " + resultado));
                         if (e != null) {
-                            log.info(("Exception is : " + e.getMessage()));
+                            log.info(("Exception : " + e.getMessage()));
                             return "";
                         }
-                        return result;
+                        return resultado;
 
                     })
-                    .thenCombine(world, (h, w) -> h + w) // (first,second)
-                    .handle((result, e) -> { // this gets invoked for both success and failure
-                        log.info(("result is : " + result));
+                    .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                    .handle((resultado, e) -> { // se invoca para ambos exito y fallo
+                        log.info(("el resultado es : " + resultado));
                         if (e != null) {
-                            log.info(("Exception Handle after world : " + e.getMessage()));
+                            log.info(("manejador desdepues de mundo : " + e.getMessage()));
                             return "";
                         }
-                        return result;
+                        return resultado;
                     })
-                    .thenCombine(hiCompletableFuture, (previous, current) -> previous + current)
+                    .thenCombine(cf, (anterior, actual) -> anterior + actual)
                     .thenApply(String::toUpperCase)
                     .join();
         });
 
     }
 
-    public String helloWorld_3_async_calls_exceptionally() {
+    public String holaMundo3LlamadasAsyncExceptionally() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-            CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
-                return " HI CompletableFuture!";
+                return " Soy un completable Future!";
             });
 
-            return hello
-                    .exceptionally((e) -> { // this gets invoked for both success and failure
-                            log.info(("Exception is : " + e.getMessage()));
+            return hola
+                    .exceptionally((e) -> { // se invoca para ambos exito y fallo
+                            log.info(("Exception : " + e.getMessage()));
                         return "";
                     })
-                    .thenCombine(world, (h, w) -> h + w) // (first,second)
-                    .exceptionally((e) -> { // this gets invoked for both success and failure
-                            log.info(("Exception Handle after world : " + e.getMessage()));
+                    .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                    .exceptionally((e) -> { // se invoca para ambos exito y fallo
+                            log.info(("manejador desdepues de mundo : " + e.getMessage()));
                             return "";
                     })
-                    .thenCombine(hiCompletableFuture, (previous, current) -> previous + current)
+                    .thenCombine(cf, (anterior, actual) -> anterior + actual)
                     .thenApply(String::toUpperCase)
 
                     .join();
@@ -77,34 +77,34 @@ public class demo2Exception {
     }
 
 
-    public String helloWorld_3_async_whenComplete() {
+    public String holaMundo3LlamadasAsyncWhenComplete() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-            CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
-                return " HI CompletableFuture!";
+                return " Soy un completable Future!";
             });
 
-            return hello
-                    .whenComplete((result, e) -> { // this gets invoked for both success and failure
-                        log.info(("result is : " + result));
+            return hola
+                    .whenComplete((resultado, e) -> { // se invoca para ambos exito y fallo
+                        log.info(("el resultado es : " + resultado));
                         if (e != null) {
-                            log.info(("Exception is : " + e.getMessage()));
+                            log.info(("Exception : " + e.getMessage()));
                         }
                     })
-                    .thenCombine(world, (h, w) -> h + w) // (first,second)
-                    .whenComplete((result, e) -> { // this gets invoked for both success and failure
-                        log.info(("result is : " + result));
+                    .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                    .whenComplete((resultado, e) -> { // se invoca para ambos exito y fallo
+                        log.info(("el resultado es : " + resultado));
                         if (e != null) {
-                            log.info(("Exception Handle after world : " + e.getMessage()));
+                            log.info(("manejador desdepues de mundo : " + e.getMessage()));
                         }
                     })
-                    .exceptionally((e) -> { // this gets invoked for both success and failure
-                        log.info(("Exception Handle after world : " + e.getMessage()));
+                    .exceptionally((e) -> { // se invoca para ambos exito y fallo
+                        log.info(("manejador desdepues de mundo : " + e.getMessage()));
                         return "";
                     })
-                    .thenCombine(hiCompletableFuture, (previous, current) -> previous + current)
+                    .thenCombine(cf, (anterior, actual) -> anterior + actual)
                     .thenApply(String::toUpperCase)
 
                     .join();

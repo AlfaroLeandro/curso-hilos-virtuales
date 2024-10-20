@@ -29,11 +29,11 @@ public class demo1HolaMundo {
 
     public String demoLlamadasAsync() {
         return Utiles.timer(() -> {
-                CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-                CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+                CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+                CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
     
-                return hello
-                    .thenCombine(world, (h, w) -> h + w) // (primero,segundo)
+                return hola
+                    .thenCombine(mundo, (h, w) -> h + w) // (primero,segundo)
                     .thenApply(String::toUpperCase)
                     .join();
         });
@@ -42,16 +42,16 @@ public class demo1HolaMundo {
 
     public String demo3LlamadasAsync() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-            CompletableFuture<String> soyUnCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un Completable future!";
             });
 
-            return hello
-                    .thenCombine(world, (h, w) -> h + w) // (primero, segundo)
-                    .thenCombine(soyUnCompletableFuture, (anterior, actual) -> anterior + actual)
+            return hola
+                    .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                    .thenCombine(cf, (anterior, actual) -> anterior + actual)
                     .thenApply(String::toUpperCase)
                     .join();
         
@@ -60,21 +60,21 @@ public class demo1HolaMundo {
 
     public String demo3LlamadasAsyncLog() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-            CompletableFuture<String> soyUnCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un Completable future!";
             });
     
-            return hello
-                    // .thenCombine(world, (h, w) -> h + w) // (primero, segundo)
-                    .thenCombine(world, (h, w) -> {
+            return hola
+                    // .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                    .thenCombine(mundo, (h, w) -> {
                         log.info("thenCombine h/w ");
                         return h + w;
                     }) // (primero, segundo)
-                    //.thenCombine(soyUnCompletableFuture, (anterior, actual) -> anterior + actual)
-                    .thenCombine(soyUnCompletableFuture, (previous, current) -> {
+                    //.thenCombine(cf, (anterior, actual) -> anterior + actual)
+                    .thenCombine(cf, (previous, current) -> {
                         log.info("thenCombine , anterior/actual");
                         return previous + current;
                     })
@@ -90,21 +90,21 @@ public class demo1HolaMundo {
 
     public String demo3LlamadasAsyncLogAsync() {
         return Utiles.timer(() -> {
-        CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-        CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-        CompletableFuture<String> soyUnCompletableFuture = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+        CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));
             return " Soy un Completable future!";
         });
 
-        return hello
-                // .thenCombine(world, (h, w) -> h + w) // (primero, segundo)
-                .thenCombineAsync(world, (h, w) -> {
+        return hola
+                // .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                .thenCombineAsync(mundo, (h, w) -> {
                     log.info("thenCombine h/w ");
                     return h + w;
                 }) // (primero, segundo)
-                //.thenCombine(soyUnCompletableFuture, (anterior, actual) -> anterior + actual)
-                .thenCombineAsync(soyUnCompletableFuture, (previous, current) -> {
+                //.thenCombine(cf, (anterior, actual) -> anterior + actual)
+                .thenCombineAsync(cf, (previous, current) -> {
                     CommonsHolaMundo.hola();
                     log.info("thenCombine , anterior/actual");
                     return previous + current;
@@ -126,22 +126,22 @@ public class demo1HolaMundo {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         return Utiles.timer(() -> {
-        CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
-        CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
 
-        CompletableFuture<String> soyUnCompletableFuture = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));
             return " Soy un Completable future!";
         }, executorService);
 
-        return hello
-                // .thenCombine(world, (h, w) -> h + w) // (primero, segundo)
-                .thenCombine(world, (h, w) -> {
+        return hola
+                // .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                .thenCombine(mundo, (h, w) -> {
                     log.info("thenCombine h/w ");
                     return h + w;
                 }) // (primero, segundo)
-                //.thenCombine(soyUnCompletableFuture, (anterior, actual) -> anterior + actual)
-                .thenCombine(soyUnCompletableFuture, (previous, current) -> {
+                //.thenCombine(cf, (anterior, actual) -> anterior + actual)
+                .thenCombine(cf, (previous, current) -> {
                     log.info("thenCombine , anterior/actual");
                     return previous + current;
                 })
@@ -160,27 +160,27 @@ public class demo1HolaMundo {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         return Utiles.timer(() -> {
-        CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
-        CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
 
-        CompletableFuture<String> soyUnCompletableFuture = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             // Utiles.sleep(Duration.ofMillis(1000));
             return " Soy un Completable future!";
         }, executorService);
 
-        return hello
-                // .thenCombine(world, (h, w) -> h + w) // (primero, segundo)
-                .thenCombineAsync(world, (h, w) -> {
+        return hola
+                // .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                .thenCombineAsync(mundo, (h, w) -> {
                     log.info("thenCombine h/w ");
                     return h + w;
                 }, executorService) // (primero, segundo)
 
-                /*  .thenCombineAsync(world, (h, w) -> {
+                /*  .thenCombineAsync(mundo, (h, w) -> {
                       log.info("thenCombine h/w ");
                       return h + w;
                   }) // Sin executor como entrada */
-                //.thenCombine(soyUnCompletableFuture, (anterior, actual) -> anterior + actual)
-                .thenCombineAsync(soyUnCompletableFuture, (previous, current) -> {
+                //.thenCombine(cf, (anterior, actual) -> anterior + actual)
+                .thenCombineAsync(cf, (previous, current) -> {
                     log.info("thenCombine , anterior/actual");
                     return previous + current;
                 }, executorService)
@@ -197,9 +197,9 @@ public class demo1HolaMundo {
 
     public String demo4LlamadasAsync() {
         return Utiles.timer(() -> {
-        CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-        CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
-        CompletableFuture<String> soyUnCompletableFuture = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+        CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));
             return " Soy un Completable future!";
         });
@@ -209,9 +209,9 @@ public class demo1HolaMundo {
         });
 
 
-        return hello
-                .thenCombine(world, (h, w) -> h + w) // (primero, segundo)
-                .thenCombine(soyUnCompletableFuture, (anterior, actual) -> anterior + actual)
+        return hola
+                .thenCombine(mundo, (h, w) -> h + w) // (primero, segundo)
+                .thenCombine(cf, (anterior, actual) -> anterior + actual)
                 .thenCombine(byeCompletableFuture, (anterior, actual) -> anterior + actual)
                 .thenApply(String::toUpperCase)
                 .join();
@@ -220,12 +220,12 @@ public class demo1HolaMundo {
     }
 
     public CompletableFuture<String> demoThenCompose() {
-        CompletableFuture<String> helloWorldFuture = CompletableFuture.supplyAsync(CommonsHolaMundo::hola)
+        CompletableFuture<String> holaMundoFuture = CompletableFuture.supplyAsync(CommonsHolaMundo::hola)
                 .thenCompose(CommonsHolaMundo::mundoFuture)
                 //.thenApply(previous -> helloWorldService.worldFuture(previous))
                 .thenApply(String::toUpperCase);
 
-        return helloWorldFuture;
+        return holaMundoFuture;
 
     }
 
@@ -285,7 +285,7 @@ public class demo1HolaMundo {
 
     public String demoHolaMundo1() {
 
-        return CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo)//  runs this in a common fork-join pool
+        return CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo)//   common fork-join pool
                 .thenApply(String::toUpperCase)
                 .join();
 
@@ -305,7 +305,7 @@ public class demo1HolaMundo {
     }
 
     public static void main(String[] args) {
-        CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo) //  runs this in a common fork-join pool
+        CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo) //   common fork-join pool
                 .thenApply(String::toUpperCase)
                 .thenAccept((result) -> {
                     log.info("resultado " + result);
