@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public abstract class Utiles {
@@ -34,9 +33,9 @@ public abstract class Utiles {
         return (fin - inicio);
     }
 
-    public static <T> T timerT(Supplier<T> supplierT){
+    public static <T> T timer(Supplier<T> supplier){
         var inicio = System.currentTimeMillis();
-        var future = supplierT.get();
+        var future = supplier.get();
         var fin = System.currentTimeMillis();
         log.info("Tiempo tomado: {}", fin - inicio);
         return future;

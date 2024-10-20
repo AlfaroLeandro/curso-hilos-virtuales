@@ -14,7 +14,7 @@ public class demo2Exception {
     private static final Logger log = LoggerFactory.getLogger(demo1HolaMundo.class);
 
     public String helloWorld_3_async_calls_handle() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
             CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
             CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
             CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
@@ -49,7 +49,7 @@ public class demo2Exception {
     }
 
     public String helloWorld_3_async_calls_exceptionally() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
             CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
             CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
             CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
@@ -78,7 +78,7 @@ public class demo2Exception {
 
 
     public String helloWorld_3_async_whenComplete() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
             CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
             CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
             CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {

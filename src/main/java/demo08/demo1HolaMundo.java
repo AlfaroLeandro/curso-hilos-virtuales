@@ -29,7 +29,7 @@ public class demo1HolaMundo {
     }
 
     public String helloWorld_multiple_async_calls() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
                 CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
                 CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
     
@@ -42,7 +42,7 @@ public class demo1HolaMundo {
 
 
     public String helloWorld_3_async_calls() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
             CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
             CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
             CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
@@ -60,7 +60,7 @@ public class demo1HolaMundo {
     }
 
     public String helloWorld_3_async_calls_log() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
             CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
             CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
             CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
@@ -90,7 +90,7 @@ public class demo1HolaMundo {
     }
 
     public String helloWorld_3_async_calls_log_async() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
         CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
         CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
@@ -126,7 +126,7 @@ public class demo1HolaMundo {
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
         CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
 
@@ -160,7 +160,7 @@ public class demo1HolaMundo {
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
         CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
 
@@ -197,7 +197,7 @@ public class demo1HolaMundo {
 
 
     public String helloWorld_4_async_calls() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
         CompletableFuture<String> world = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
         CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(() -> {
@@ -231,7 +231,7 @@ public class demo1HolaMundo {
     }
 
     public String allOf() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
             CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return "Hello";
@@ -251,7 +251,7 @@ public class demo1HolaMundo {
     }
 
     public String anyOf() {
-        return Utiles.timerT(() -> {
+        return Utiles.timer(() -> {
 
         CompletableFuture<String> db = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));

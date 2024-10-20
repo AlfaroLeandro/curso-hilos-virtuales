@@ -1,6 +1,7 @@
 package demo08;
 
 import com.vinsguru.sec08.aggregator.AggregatorService;
+import demo08.agregador.AgregadorServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +17,9 @@ public class demo3Agregador {
     public static void main(String[] args) throws Exception {
         // beans / singletons
         var executor = Executors.newVirtualThreadPerTaskExecutor();
-        var aggregator = new AggregatorService(executor);
+        var aggregator = new AgregadorServicio(executor);
 
-        log.info("product={}", aggregator.getProductDto(51));
+        log.info("articulo={}", aggregator.getArticulo(51));
     }
 
 }

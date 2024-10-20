@@ -1,6 +1,6 @@
 package demo08;
 
-import com.vinsguru.sec08.aggregator.AggregatorService;
+import demo08.agregador.AgregadorServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +19,11 @@ public class demo4AllOf {
 
         // beans / singletons
         var executor = Executors.newVirtualThreadPerTaskExecutor();
-        var aggregator = new AggregatorService(executor);
+        var aggregator = new AgregadorServicio(executor);
 
         // create futures
         var futures = IntStream.rangeClosed(52, 100)
-                               .mapToObj(id -> CompletableFuture.supplyAsync(() -> aggregator.getProductDto(id), executor))
+                               .mapToObj(id -> CompletableFuture.supplyAsync(() -> aggregator.getArticulo(id), executor))
                                .toList();
 
         // wait for all the completable-futures to complete
