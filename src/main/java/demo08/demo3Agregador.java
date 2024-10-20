@@ -16,9 +16,9 @@ public class demo3Agregador {
     public static void main(String[] args) throws Exception {
         // beans / singletons
         var executor = Executors.newVirtualThreadPerTaskExecutor();
-        var aggregator = new AgregadorServicio(executor);
+        var agregador = new AgregadorServicio(executor);
 
-        log.info("articulo={}", aggregator.getArticulo(51));
+        log.info("articulo={}", agregador.getArticulo(51));
     }
 
 }
