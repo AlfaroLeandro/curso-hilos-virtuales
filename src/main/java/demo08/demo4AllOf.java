@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 /*
-    Demo the use of all-of
+    Demo usando All of
  */
 public class demo4AllOf {
 

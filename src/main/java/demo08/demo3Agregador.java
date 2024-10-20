@@ -1,6 +1,5 @@
 package demo08;
 
-import com.vinsguru.sec08.aggregator.AggregatorService;
 import demo08.agregador.AgregadorServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
