@@ -17,14 +17,14 @@ public class Demo7ValuesScopeTareaEstructurada {
     }
 
     private static void task(){
-        try(var taskScope = new StructuredTaskScope<>()){
+        try(var tareaScope = new StructuredTaskScope<>()){
 
             log.info("token: {}", SESSION_TOKEN.get());
 
-            var subtarea1 = taskScope.fork(CommonsDemo09::servicioCalcularPrecioArticulo);
-            var subtarea2 = taskScope.fork(CommonsDemo09::servicioCalcularPrecioArticulo2);
+            var subtarea1 = tareaScope.fork(CommonsDemo09::servicioCalcularPrecioArticulo);
+            var subtarea2 = tareaScope.fork(CommonsDemo09::servicioCalcularPrecioArticulo2);
 
-            taskScope.join();
+            tareaScope.join();
 
             log.info("subtarea1 estado: {}", subtarea1.state());
             log.info("subtarea2 estado: {}", subtarea2.state());

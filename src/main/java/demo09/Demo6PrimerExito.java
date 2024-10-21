@@ -17,16 +17,16 @@ public class Demo6PrimerExito {
 
     public static void main(String[] args) {
 
-        try(var taskScope = new StructuredTaskScope.ShutdownOnSuccess<>()){
-            var subtask1 = taskScope.fork(CommonsDemo09::tareaError);
-            var subtask2 = taskScope.fork(CommonsDemo09::servicioCalcularPrecioArticulo);
+        try(var tareaScope = new StructuredTaskScope.ShutdownOnSuccess<>()){
+            var subtarea1 = tareaScope.fork(CommonsDemo09::tareaError);
+            var subtarea2 = tareaScope.fork(CommonsDemo09::servicioCalcularPrecioArticulo);
 
-            taskScope.join();
+            tareaScope.join();
 
-            log.info("subtask1 state: {}", subtask1.state());
-            log.info("subtask2 state: {}", subtask2.state());
+            log.info("subtarea1 state: {}", subtarea1.state());
+            log.info("subtarea2 state: {}", subtarea2.state());
 
-            log.info("subtask result: {}", taskScope.result(ex -> new RuntimeException("all failed")));
+            log.info("resultado subtarea: {}", tareaScope.result(ex -> new RuntimeException("todos fallaron")));
 
 
         }catch (Exception e){
