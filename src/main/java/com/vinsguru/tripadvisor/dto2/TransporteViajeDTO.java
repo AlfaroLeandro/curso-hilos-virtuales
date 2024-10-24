@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record TransporteAeropuertoDTO (
-    List<TransporteDTO> rentaDeAutos,
+public record TransporteViajeDTO(
+    List<TransporteDTO> alquilerVehiculos,
     List<TransporteDTO> transportesPublicos
 ) {}

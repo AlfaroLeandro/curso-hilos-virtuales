@@ -8,9 +8,9 @@ public enum TipoAlojamiento {
 
     HOTEL,
 
-    CASA_DE_PLAYA,
+    CASA,
 
-    PH;
+    SIN_ESPECIFICAR;
 
     public static TipoAlojamiento getAleatorio() {
         Random random = new Random();

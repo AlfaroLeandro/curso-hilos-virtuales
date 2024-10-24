@@ -6,7 +6,7 @@ import java.util.List;
 
 @Builder
 public record RecomendacionDTO(
-    List<String> restaurantes,
-    List<String> paseos
+    List<String> excursiones,
+    List<String> restaurantes
 ) {
 }
