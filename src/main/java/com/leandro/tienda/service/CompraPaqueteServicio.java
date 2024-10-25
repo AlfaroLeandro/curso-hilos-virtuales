@@ -2,20 +2,15 @@ package com.leandro.tienda.service;
 
 import com.leandro.tienda.cliente.ArticuloCliente;
 import com.leandro.tienda.cliente.CompraCliente;
-import com.leandro.tienda.dto.ArticuloDetalleDTO;
-import com.leandro.tienda.dto.CompraRequestDTO;
-import com.leandro.tienda.dto.PaqueteCompraRequest;
-import com.leandro.tienda.dto.PaqueteCompraResponse;
+import com.leandro.tienda.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,17 +25,18 @@ public class CompraPaqueteServicio {
     public PaqueteCompraResponse comprarPaquete(PaqueteCompraRequest request) {
         List<CompraRequestDTO> articulosAComprar = request.articulosAComprar();
 
-        // Obtener detalles de todos los artículos solicitados
-        List<ArticuloDetalleDTO> detallesArticulos = articulosAComprar.stream()
-                .map(articulo -> articuloCliente.getDetalle().stream()
-                        .filter(a -> a.id().equals(articulo.idArticulo()))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalStateException("Artículo no encontrado: " + articulo.idArticulo()))
-                )
-                .collect(Collectors.toList());
+        var stocksCompra = articulosAComprar.stream().collect(Collectors.toMap(CompraRequestDTO::idArticulo,
+                                                                               CompraRequestDTO::cantidad));
+        boolean sotckInsuficiente = request.articulosAComprar().parallelStream()
+                                                .map(CompraRequestDTO::idArticulo)
+                                                .anyMatch(id -> Optional.ofNullable(articuloCliente.getStock(id))
+                                                                        .map(ArticuloStockDTO::cantidad).orElseThrow() < stocksCompra.get(id));
+
+        if(sotckInsuficiente)
+            throw new RuntimeException("El stock de alguno de los articulos del paquete es insuficiente");
 
         // Realizar la compra de cada artículo
-        List<PaqueteCompraResponse> comprasRealizadas = articulosAComprar.stream()
+        List<CompraResponseDTO> comprasRealizadas = articulosAComprar.stream()
                 .map(compraCliente::comprarArticulo)
                 .collect(Collectors.toList());
 
@@ -49,7 +45,7 @@ public class CompraPaqueteServicio {
                 .idCompraPaquete(UUID.randomUUID())
                 .articulosComprados(comprasRealizadas)
                 .fechaEntrega(comprasRealizadas.stream()
-                        .map(PaqueteCompraRequest::fechaEntrega)
+                        .map(CompraResponseDTO::fechaEntrega)
                         .max(Comparator.naturalOrder())
                         .orElse(LocalDate.now().plusDays(3)))
                 .build();
