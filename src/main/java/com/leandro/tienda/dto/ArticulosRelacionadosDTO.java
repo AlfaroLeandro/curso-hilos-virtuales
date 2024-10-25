@@ -5,6 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public class ArticulosRelacionadosDTO {
-    List<Long> idsArticulos;
+public record ArticulosRelacionadosDTO(
+        List<Long> idsArticulos
+) {
 }

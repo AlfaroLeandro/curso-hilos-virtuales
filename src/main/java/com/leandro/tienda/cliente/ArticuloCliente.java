@@ -12,11 +12,11 @@ public class ArticuloCliente {
     private final RestClient client;
 
     // Cliente para obtener todos los artículos
-    public List<ArticuloDTO> getArticulos() {
+    public ArticuloDTO getDetalle(Long idArticulo) {
         return this.client.get()
-                .uri("/articulo/detalles")
+                .uri("/articulo/{id}/detalles", idArticulo)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<ArticuloDTO>>() {});
+                .body(ArticuloDTO.class);
     }
 
     // Cliente para obtener las categorías de un artículo
@@ -49,5 +49,12 @@ public class ArticuloCliente {
                 .uri("/articulo/{id}/reviews", idArticulo)
                 .retrieve()
                 .body(ArticuloReview.class);
+    }
+
+    public ArticulosRelacionadosDTO getRelacionados(Long idArticulo) {
+        return this.client.get()
+                .uri("/articulo/{id}/relacionados", idArticulo)
+                .retrieve()
+                .body(ArticulosRelacionadosDTO.class);
     }
 }

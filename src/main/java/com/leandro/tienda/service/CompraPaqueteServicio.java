@@ -32,7 +32,7 @@ public class CompraPaqueteServicio {
 
         // Obtener detalles de todos los artículos solicitados
         List<ArticuloDetalleDTO> detallesArticulos = articulosAComprar.stream()
-                .map(articulo -> articuloCliente.getArticulos().stream()
+                .map(articulo -> articuloCliente.getDetalle().stream()
                         .filter(a -> a.id().equals(articulo.idArticulo()))
                         .findFirst()
                         .orElseThrow(() -> new IllegalStateException("Artículo no encontrado: " + articulo.idArticulo()))
