@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record PaqueteArticulos(
+public record PaqueteArticulosDTO(
         ArticuloDetalleDTO articulo,
         List<ArticuloDetalleDTO> articulosRelacionados
 ) {

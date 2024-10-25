@@ -3,7 +3,7 @@ package com.leandro.tienda.service;
 import com.leandro.tienda.cliente.ArticuloCliente;
 import com.leandro.tienda.dto.ArticuloDetalleDTO;
 import com.leandro.tienda.dto.ArticulosRelacionadosDTO;
-import com.leandro.tienda.dto.PaqueteArticulos;
+import com.leandro.tienda.dto.PaqueteArticulosDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class PaqueteServicio {
     private final ArticuloCliente articuloCliente;
     private final ExecutorService executor;
 
-    public PaqueteArticulos armarPaqueteArticulos(Long idArticulo) {
+    public PaqueteArticulosDTO armarPaqueteArticulos(Long idArticulo) {
         try {
             var articuloFuture = CompletableFuture.supplyAsync(() -> obtenerDetalleArticulo(idArticulo), executor);
             var articulosRelacionadosFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getRelacionados(idArticulo), executor)
@@ -29,7 +29,7 @@ public class PaqueteServicio {
                                                                                                             .map(this::obtenerDetalleArticulo)
                                                                                                             .toList(), executor);
 
-            return PaqueteArticulos.builder()
+            return PaqueteArticulosDTO.builder()
                     .articulo(articuloFuture.get())
                     .articulosRelacionados(articulosRelacionadosFuture.get())
                     .build();

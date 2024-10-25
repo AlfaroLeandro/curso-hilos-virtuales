@@ -14,7 +14,7 @@ public class CompraCliente {
     // Cliente para comprar un artículo
     public CompraResponseDTO comprarArticulo(CompraRequestDTO compraRequestDTO) {
         return this.client.post()
-                .uri("/compra")
+//                .uri("/")
                 .body(compraRequestDTO)
                 .retrieve()
                 .body(CompraResponseDTO.class);
@@ -23,7 +23,7 @@ public class CompraCliente {
     // Cliente para consultar una compra específica por ID
     public CompraResponseDTO consultarCompra(UUID idCompra) {
         return this.client.get()
-                .uri("/compra/{idCompra}", idCompra)
+                .uri("/{idCompra}", idCompra)
                 .retrieve()
                 .body(CompraResponseDTO.class);
     }
