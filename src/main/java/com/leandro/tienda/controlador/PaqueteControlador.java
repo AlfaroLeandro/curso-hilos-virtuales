@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -23,12 +24,12 @@ public class PaqueteControlador {
 
     @PostMapping("/compra")
     public ResponseEntity<PaqueteCompraResponse> comprarPaquete(@RequestBody PaqueteCompraRequest request) {
-        try {
+//        try {
             PaqueteCompraResponse response = compraPaqueteServicio.comprarPaquete(request);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("mensaje", e.getMessage()));
+//        }
     }
 
     @GetMapping("/compra/{idCompraPaquete}")

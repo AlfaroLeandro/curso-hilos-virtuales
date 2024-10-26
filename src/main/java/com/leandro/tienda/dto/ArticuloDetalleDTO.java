@@ -2,13 +2,15 @@ package com.leandro.tienda.dto;
 
 import lombok.Builder;
 
+import java.util.List;
+
 @Builder
 public record ArticuloDetalleDTO(
 
         ArticuloDTO articulo,
-        ArticuloCategoriasDTO categorias,
+        List<String> categorias,
         ArticuloStockDTO stock,
-        ArticuloVariacionesDTO variaciones,
+        List<VariacionDTO> variaciones,
         ArticuloReview review
 ) {
 }

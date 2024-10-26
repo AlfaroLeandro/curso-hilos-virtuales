@@ -1,9 +1,7 @@
 package com.leandro.tienda.service;
 
 import com.leandro.tienda.cliente.ArticuloCliente;
-import com.leandro.tienda.dto.ArticuloDetalleDTO;
-import com.leandro.tienda.dto.ArticulosRelacionadosDTO;
-import com.leandro.tienda.dto.PaqueteArticulosDTO;
+import com.leandro.tienda.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,17 +39,19 @@ public class PaqueteServicio {
 
     private ArticuloDetalleDTO obtenerDetalleArticulo(Long idArticulo) {
         var articuloFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getDetalle(idArticulo), executor);
-        var articuloCategoriasFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getCategorias(idArticulo), executor);
+        var articuloCategoriasFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getCategorias(idArticulo), executor)
+                                                        .thenApply(ArticuloCategoriasDTO::categorias);
+        var articuloVariacionesFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getVariaciones(idArticulo), executor)
+                                                         .thenApply(ArticuloVariacionesDTO::varaciones);
         var articuloStockFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getStock(idArticulo), executor);
-        var articuloVariacionesFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getVariaciones(idArticulo), executor);
         var articuloReviewsFuture = CompletableFuture.supplyAsync(() -> articuloCliente.getReviews(idArticulo), executor);
 
         try {
             return ArticuloDetalleDTO.builder()
                     .articulo(articuloFuture.get())
                     .categorias(articuloCategoriasFuture.get())
-                    .stock(articuloStockFuture.get())
                     .variaciones(articuloVariacionesFuture.get())
+                    .stock(articuloStockFuture.get())
                     .review(articuloReviewsFuture.get())
                     .build();
         } catch (Exception e) {

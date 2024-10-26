@@ -14,7 +14,7 @@ public class CompraCliente {
     // Cliente para comprar un artículo
     public CompraResponseDTO comprarArticulo(CompraRequestDTO compraRequestDTO) {
         return this.client.post()
-//                .uri("/")
+                .uri("")
                 .body(compraRequestDTO)
                 .retrieve()
                 .body(CompraResponseDTO.class);
