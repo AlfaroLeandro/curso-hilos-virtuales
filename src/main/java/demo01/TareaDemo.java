@@ -23,11 +23,9 @@ public class TareaDemo {
     To create a simple java platform thread
  */
     private static void demo1Plataforma() {
-        for (int i = 0; i < CANTIDAD_HILOS_PLATAFORMA; i++) {
-            final int numeroHilo = i;
-            Thread hilo = new Thread(() -> operacionEntradaSalida(numeroHilo));
-            hilo.start();
-        }
+        IntStream.range(0, CANTIDAD_HILOS_PLATAFORMA)
+                .mapToObj(i -> new Thread(() -> operacionEntradaSalida(i)))
+                .forEach(Thread::start);
     }
 
     /**

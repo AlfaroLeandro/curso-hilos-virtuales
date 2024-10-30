@@ -16,20 +16,28 @@ public class PlanificacionCooperativaDemo {
 
         var builder = Thread.ofVirtual();
         IntStream.rangeClosed(1, 3)
-                 .forEach(i -> builder.unstarted(() -> ejecutar(i)).start());
+                 .forEach(i -> builder.unstarted(() -> ejecutarTareaConYield(i)).start());
 
         Utiles.sleep(Duration.ofSeconds(2));
     }
 
-    private static void ejecutar(int numeroHilo){
-        log.info("iniciando hilo {}", numeroHilo);
+    private static void ejecutarTareaConYield(int id){
+        for (int i = 0; i < 5; i++) {
+            log.info("id {} - Iteracion {} - Hilo {}", id, i, Thread.currentThread());
 
-        IntStream.range(0, 10)
-                .forEachOrdered(i -> {
-                    log.info("hilo {} esta imprimiendo {}. Thread: {}", numeroHilo, i, Thread.currentThread());
-                    Thread.yield();
-                });
-        log.info("hilo {} finalizado", numeroHilo);
+            // Usamos yield para ceder el control y permitir que otros hilos se ejecuten
+            Thread.yield();
+
+            // Simulación de trabajo
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.info("Hilo {} fue interrumpido", id);
+                break;
+            }
+        }
+        log.info("Hilo {} finalizado", id);
     }
 
 }

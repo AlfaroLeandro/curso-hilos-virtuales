@@ -14,8 +14,8 @@ public class AgregadorServicio {
 
     public ArticuloDTO getArticulo(int id) throws Exception {
         var product = executorService.submit(() -> ArticuloCliente.getArticulo(id));
-        var rating = executorService.submit(() -> ArticuloCliente.getPrecio(id));
-        return new ArticuloDTO(id, product.get(), rating.get());
+        var precio = executorService.submit(() -> ArticuloCliente.getPrecio(id));
+        return new ArticuloDTO(id, product.get(), precio.get());
     }
 
 }

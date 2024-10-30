@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import util.Utiles;
 
 import java.time.Duration;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class StackDemo {
@@ -20,37 +21,33 @@ public class StackDemo {
 
     private static void demo(Thread.Builder builder){
         IntStream.rangeClosed(1, 20)
-                .forEach(i -> builder.start(() -> ejecutar(i)));
+                .forEach(i -> metodoRecursivo());
     }
 
-    public static void ejecutar(int i){
-        log.info("Iniciando tarea {}", i);
-        try{
-            metodo1(i);
-        }catch (Exception e){
-            log.error("error {}", i, e);
-        }
-        log.info("Finalizando Tarea {}", i);
+    public static void metodoRecursivo() {
+        double probabilidad = ThreadLocalRandom.current().nextDouble(0, 1);
+        if(probabilidad<=0.9)
+            metodoRecursivo2();
+        if(probabilidad<=0.95)
+            metodoRecursivo3();
     }
 
-    private static void metodo1(int i){
-        Utiles.sleep(Duration.ofMillis(150));
-        try{
-            metodo2(i);
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
+    public static void metodoRecursivo2() {
+        double probabilidad = ThreadLocalRandom.current().nextDouble(0, 1);
+        if(probabilidad<=0.9)
+            metodoRecursivo3();
+        if(probabilidad<=0.95)
+            metodoRecursivo2();
+
+        metodoRecursivo();
     }
 
-    private static void metodo2(int i){
-        Utiles.sleep(Duration.ofMillis(200));
-        metodo3(i);
-    }
-
-    private static void metodo3(int i){
-        Utiles.sleep(Duration.ofMillis(450));
-        if(i == 10){
-            throw new IllegalArgumentException("No puedo ser 10");
-        }
+    public static void metodoRecursivo3() {
+        double probabilidad = ThreadLocalRandom.current().nextDouble(0, 1);
+        if(probabilidad<=0.9)
+            metodoRecursivo();
+        if(probabilidad<=0.95)
+            return;
+        throw new RuntimeException("No podia llegar aca");
     }
 }

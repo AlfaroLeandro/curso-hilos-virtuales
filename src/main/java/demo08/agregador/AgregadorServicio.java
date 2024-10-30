@@ -15,9 +15,9 @@ public class AgregadorServicio {
 
     public ArticuloDTO getArticulo(int id) {
         var product = executorService.submit(() -> ArticuloCliente.getArticulo(id));
-        var rating = executorService.submit(() -> ArticuloCliente.getPrecio(id));
+        var precio = executorService.submit(() -> ArticuloCliente.getPrecio(id));
         try {
-            return new ArticuloDTO(id, product.get(), rating.get());
+            return new ArticuloDTO(id, product.get(), precio.get());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
