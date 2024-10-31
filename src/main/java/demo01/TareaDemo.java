@@ -32,7 +32,7 @@ public class TareaDemo {
      * Usando Thread.Builder
      */
     private static void demo2Plataforma(){
-        var builder = Thread.ofPlatform().name("leandro", 1);
+        var builder = Thread.ofPlatform().name("plataforma", 1);
         IntStream.range(0, CANTIDAD_HILOS_PLATAFORMA)
                 .mapToObj(i -> builder.unstarted(() -> operacionEntradaSalida(i)))
                 .forEach(Thread::start);

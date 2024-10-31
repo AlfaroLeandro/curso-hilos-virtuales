@@ -10,14 +10,19 @@ public class ConcurrenciaLimitador implements AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(ConcurrenciaLimitador.class);
 
-    private final ExecutorService executor;
-    private final Semaphore semaforo;
     private final Queue<Callable<?>> queue;
+    private final Semaphore semaforo;
+    private final ExecutorService executor;
 
     public ConcurrenciaLimitador(ExecutorService executor, int limit) {
         this.executor = executor;
         this.semaforo = new Semaphore(limit);
         this.queue = new ConcurrentLinkedQueue<>();
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.executor.close();
     }
 
     public <T> Future<T> submit(Callable<T> callable){
@@ -37,8 +42,4 @@ public class ConcurrenciaLimitador implements AutoCloseable {
         return null;
     }
 
-    @Override
-    public void close() throws Exception {
-        this.executor.close();
-    }
 }

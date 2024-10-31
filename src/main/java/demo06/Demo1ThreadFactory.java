@@ -29,7 +29,7 @@ public class Demo1ThreadFactory {
 
     private static void demo(ThreadFactory factory){
         IntStream.range(0, 30)
-                .forEach(_ ->{
+                .forEach(i ->{
                     var t = factory.newThread(() -> {
                         log.info("Tarea iniciada. {}", Thread.currentThread());
                         var ct = factory.newThread(() -> {
