@@ -27,7 +27,7 @@ public class CPUDemo {
         IntStream.rangeClosed(1, CANTIDAD_TAREAS)
                 .forEach(_ ->
                         builder.start(() ->{
-                            operacionCPU(45);
+                            Utiles.timer(() -> fibonacci(45));
                             latch.countDown();
                         }));
         try {
@@ -35,13 +35,6 @@ public class CPUDemo {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-
-    public static void operacionCPU(int i){
-        log.info("Empezando la tarea de CPU. Info del hilo: {}", Thread.currentThread());
-        var tiempo = Utiles.timer(() -> fibonacci(i));
-        log.info("Finalizando la tarea de CPU. tiempo total: {} ms", tiempo);
     }
 
 
