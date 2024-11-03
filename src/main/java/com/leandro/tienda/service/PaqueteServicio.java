@@ -59,3 +59,21 @@ public class PaqueteServicio {
         }
     }
 }
+
+//    private void articuloEntradaSalida(long articuloId) {
+//        var categorias = articuloCliente.getCategorias(articuloId); // E/S
+//        var detalleArticulo  = articuloCliente.getDetalle(articuloId); // E/S
+//        var articulosRealacionados = articuloCliente.getRelacionados(articuloId); // E/S
+//        var stockArticulo = articuloCliente.getStock(articuloId); // E/S
+//    }
+//
+//    private void articuloEntradaSalidaVirtual(long articuloId) {
+//        Runnable tarea = () -> {
+//            var categorias = articuloCliente.getCategorias(articuloId); // E/S
+//            var detalleArticulo  = articuloCliente.getDetalle(articuloId); // E/S
+//            var articulosRealacionados = articuloCliente.getRelacionados(articuloId); // E/S
+//            var stockArticulo = articuloCliente.getStock(articuloId); // E/S
+//        };
+//
+//        Thread.ofVirtual().start(tarea);
+//    }
