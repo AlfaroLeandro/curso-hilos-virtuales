@@ -21,12 +21,12 @@ public class demo4AllOf {
         var executor = Executors.newVirtualThreadPerTaskExecutor();
         var agregador = new AgregadorServicio(executor);
 
-        // create futures
+        // creo los futures
         var futures = IntStream.rangeClosed(52, 100)
                                .mapToObj(id -> CompletableFuture.supplyAsync(() -> agregador.getArticulo(id), executor))
                                .toList();
 
-        // wait for all the completable-futures to complete
+        // espero a que se completen todos
         CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)).join();
 
         log.info("lista: {}", futures.stream()

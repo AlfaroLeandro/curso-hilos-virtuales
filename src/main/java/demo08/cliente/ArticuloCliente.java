@@ -1,4 +1,4 @@
-package demo08.servicioexterno;
+package demo08.cliente;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

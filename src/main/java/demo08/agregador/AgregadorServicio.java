@@ -1,8 +1,7 @@
 package demo08.agregador;
 
-import demo08.servicioexterno.ArticuloCliente;
+import demo08.cliente.ArticuloCliente;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 public class AgregadorServicio {

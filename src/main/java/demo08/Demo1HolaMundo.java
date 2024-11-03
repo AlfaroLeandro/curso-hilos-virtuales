@@ -1,5 +1,6 @@
 package demo08;
 
+import demo08.servicio.HolaMundoServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Utiles;
@@ -12,25 +13,31 @@ import java.util.concurrent.Executors;
 
 import static java.util.stream.Collectors.joining;
 
-public class demo1HolaMundo {
+public class Demo1HolaMundo {
 
-    private static final Logger log = LoggerFactory.getLogger(demo1HolaMundo.class);
-
-    public static CompletableFuture<String> demo() {
-        return CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo)//  common fork-join pool
+    private static final Logger log = LoggerFactory.getLogger(Demo1HolaMundo.class);
+    private HolaMundoServicio hms;
+    
+    
+    public Demo1HolaMundo(HolaMundoServicio hms) {
+        this.hms = hms;
+    }
+    
+    public CompletableFuture<String> demo() {
+        return CompletableFuture.supplyAsync(hms::holaMundo)//  common fork-join pool
                                 .thenApply(String::toUpperCase);
     }
 
     public CompletableFuture<String> demoThenApply() {
-        return CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo)//  common fork-join pool
+        return CompletableFuture.supplyAsync(hms::holaMundo)//  common fork-join pool
                                 .thenApply(String::toUpperCase)
                                 .thenApply((s) -> s.length() + " - " + s);
     }
 
     public String demoLlamadasAsync() {
         return Utiles.timer(() -> {
-                CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-                CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+                CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+                CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
     
                 return hola
                     .thenCombine(mundo, (h, w) -> h + w) // (primero,segundo)
@@ -42,8 +49,8 @@ public class demo1HolaMundo {
 
     public String demo3LlamadasAsync() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
             CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un Completable future!";
@@ -60,8 +67,8 @@ public class demo1HolaMundo {
 
     public String demo3LlamadasAsyncLog() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
             CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un Completable future!";
@@ -90,8 +97,8 @@ public class demo1HolaMundo {
 
     public String demo3LlamadasAsyncLogAsync() {
         return Utiles.timer(() -> {
-        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
         CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));
             return " Soy un Completable future!";
@@ -105,13 +112,13 @@ public class demo1HolaMundo {
                 }) // (primero, segundo)
                 //.thenCombine(cf, (anterior, actual) -> anterior + actual)
                 .thenCombineAsync(cf, (previous, current) -> {
-                    CommonsHolaMundo.hola();
+                    hms.hola();
                     log.info("thenCombine , anterior/actual");
                     return previous + current;
                 })
                 //.thenApply(String::toUpperCase)
                 .thenApplyAsync(s -> {
-                    CommonsHolaMundo.hola();
+                    hms.hola();
                     log.info("thenApply");
                     return s.toUpperCase();
                 })
@@ -126,8 +133,8 @@ public class demo1HolaMundo {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         return Utiles.timer(() -> {
-        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
-        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola, executorService);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo, executorService);
 
         CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));
@@ -160,8 +167,8 @@ public class demo1HolaMundo {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         return Utiles.timer(() -> {
-        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola, executorService);
-        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo, executorService);
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola, executorService);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo, executorService);
 
         CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             // Utiles.sleep(Duration.ofMillis(1000));
@@ -197,8 +204,8 @@ public class demo1HolaMundo {
 
     public String demo4LlamadasAsync() {
         return Utiles.timer(() -> {
-        CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+        CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+        CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
         CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
             Utiles.sleep(Duration.ofMillis(1000));
             return " Soy un Completable future!";
@@ -220,8 +227,8 @@ public class demo1HolaMundo {
     }
 
     public CompletableFuture<String> demoThenCompose() {
-        CompletableFuture<String> holaMundoFuture = CompletableFuture.supplyAsync(CommonsHolaMundo::hola)
-                .thenCompose(CommonsHolaMundo::mundoFuture)
+        CompletableFuture<String> holaMundoFuture = CompletableFuture.supplyAsync(hms::hola)
+                .thenCompose(hms::mundoFuture)
                 //.thenApply(previous -> helloWorldService.worldFuture(previous))
                 .thenApply(String::toUpperCase);
 
@@ -285,7 +292,7 @@ public class demo1HolaMundo {
 
     public String demoHolaMundo1() {
 
-        return CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo)//   common fork-join pool
+        return CompletableFuture.supplyAsync(hms::holaMundo)//   common fork-join pool
                 .thenApply(String::toUpperCase)
                 .join();
 
@@ -305,12 +312,12 @@ public class demo1HolaMundo {
     }
 
     public static void main(String[] args) {
-        CompletableFuture.supplyAsync(CommonsHolaMundo::holaMundo) //   common fork-join pool
-                .thenApply(String::toUpperCase)
-                .thenAccept((result) -> {
-                    log.info("resultado " + result);
-                })
-                .join();
+//        CompletableFuture.supplyAsync(this::holaMundo) //   common fork-join pool
+//                .thenApply(String::toUpperCase)
+//                .thenAccept((result) -> {
+//                    log.info("resultado " + result);
+//                })
+//                .join();
 
         log.info("demo finalizada");
         Utiles.sleep(Duration.ofMillis(2000));

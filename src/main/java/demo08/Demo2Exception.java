@@ -1,6 +1,7 @@
 package demo08;
 
 
+import demo08.servicio.HolaMundoServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Utiles;
@@ -9,14 +10,19 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 
-public class demo2Exception {
+public class Demo2Exception {
 
-    private static final Logger log = LoggerFactory.getLogger(demo2Exception.class);
+    private static final Logger log = LoggerFactory.getLogger(Demo2Exception.class);
+    private HolaMundoServicio hms;
 
+    public Demo2Exception(HolaMundoServicio hms) {
+        this.hms = hms;
+    }
+    
     public String holaMundo3LlamadasAsyncHandle() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
             CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un completable Future!";
@@ -50,8 +56,8 @@ public class demo2Exception {
 
     public String holaMundo3LlamadasAsyncExceptionally() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
             CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un completable Future!";
@@ -79,8 +85,8 @@ public class demo2Exception {
 
     public String holaMundo3LlamadasAsyncWhenComplete() {
         return Utiles.timer(() -> {
-            CompletableFuture<String> hola = CompletableFuture.supplyAsync(CommonsHolaMundo::hola);
-            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(CommonsHolaMundo::mundo);
+            CompletableFuture<String> hola = CompletableFuture.supplyAsync(hms::hola);
+            CompletableFuture<String> mundo = CompletableFuture.supplyAsync(hms::mundo);
             CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> {
                 Utiles.sleep(Duration.ofMillis(1000));
                 return " Soy un completable Future!";
