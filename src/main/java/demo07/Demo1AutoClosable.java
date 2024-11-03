@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import util.Utiles;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -18,27 +19,31 @@ public class Demo1AutoClosable {
 
     }
 
-    // sin autocloseable - habia que cerrar el executor service
-    private static void sinAutoClosable(){
-        var executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(Demo1AutoClosable::tarea);
-        log.info("subido");
-        executorService.shutdown();
-    }
-
-    private static void conAutoCloseable(){
-        try(var executorService = Executors.newSingleThreadExecutor()){
-            executorService.submit(Demo1AutoClosable::tarea);
-            executorService.submit(Demo1AutoClosable::tarea);
-            executorService.submit(Demo1AutoClosable::tarea);
-            executorService.submit(Demo1AutoClosable::tarea);
-            log.info("subido");
+    public static void ejemploSinAutocloseable() {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        try {
+            // Enviamos una tarea al executor
+            executor.submit(() -> {
+                System.out.println("Tarea ejecutada en el executor sin AutoCloseable");
+            });
+        } finally {
+            // Cerramos el executor manualmente
+            if (!executor.isShutdown()) {
+                executor.shutdown();
+                System.out.println("El executor se ha cerrado manualmente.");
+            }
         }
     }
 
-    private static void tarea(){
-        Utiles.sleep(Duration.ofSeconds(1));
-        log.info("Tarea ejecutada");
+    public static void ejemploAutocloseable() {
+        try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
+            // Enviamos una tarea al executor
+            executor.submit(() -> {
+                System.out.println("Tarea ejecutada en el executor usando AutoCloseable");
+            });
+        }
+        // El executor se cerrará automáticamente aquí, al salir del bloque try
+        System.out.println("El executor se ha cerrado automáticamente.");
     }
 
 }

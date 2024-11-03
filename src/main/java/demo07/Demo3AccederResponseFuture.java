@@ -1,10 +1,13 @@
 package demo07;
 
+import demo07.agregador.ArticuloDTO;
 import demo07.servicioexterno.ArticuloCliente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.IntStream;
 
 /*
     Obtener multiples productos en paralelo
@@ -16,18 +19,12 @@ public class Demo3AccederResponseFuture {
     public static void main(String[] args) throws Exception {
 
         try(var executor = Executors.newVirtualThreadPerTaskExecutor()){
-
-            var product1 = executor.submit(() -> ArticuloCliente.getArticulo(1));
-            var product2 = executor.submit(() -> ArticuloCliente.getArticulo(2));
-            var product3 = executor.submit(() -> ArticuloCliente.getArticulo(3));
-
-            log.info("producto-1: {}", product1.get());
-            log.info("producto-2: {}", product2.get());
-            log.info("producto-3: {}", product3.get());
-
+            for (int i = 1; i <= 5; i++) {
+                final int j = i;
+                Future<String> submit = executor.submit(() -> ArticuloCliente.getArticulo(j));
+                log.info("articulo-{}: {}", j, submit.get());
+            }
         }
-
     }
-
 
 }

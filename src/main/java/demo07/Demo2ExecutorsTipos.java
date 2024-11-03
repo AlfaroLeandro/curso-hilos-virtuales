@@ -52,9 +52,9 @@ public class Demo2ExecutorsTipos {
         }
     }
 
-    private static void ejecutar(ExecutorService executorService, int taskCount){
+    private static void ejecutar(ExecutorService executorService, int tareaId){
         try(executorService){
-            IntStream.range(0, taskCount).forEach(Demo2ExecutorsTipos::tareaES);
+            IntStream.range(0, tareaId).forEach(Demo2ExecutorsTipos::tareaES);
             log.info("subido");
         }
     }
